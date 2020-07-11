@@ -1,11 +1,10 @@
 package users
 
 import (
+	"database/sql"
 	"log"
 
 	"github.com/gin-gonic/gin"
-
-	"github.com/fellippemendonca/templateWebService/internal/services/databases/mysql"
 )
 
 type node struct {
@@ -16,7 +15,7 @@ type node struct {
 
 // GetUsers get all users
 func GetUsers(c *gin.Context) {
-	// user := c.Params.ByName("name")
+	mysql := c.Keys["MYSQL"].(*sql.DB)
 
 	//users := []node{}
 	users := []string{}
@@ -31,7 +30,7 @@ func GetUsers(c *gin.Context) {
 	// rows, err := db.Query(queryOne, 1)
 
 	queryAll := "select ID, FIRST_NAME, LAST_NAME from profile"
-	rows, err := mysql.DB.Query(queryAll)
+	rows, err := mysql.Query(queryAll)
 	if err != nil {
 		log.Fatal(err)
 	}

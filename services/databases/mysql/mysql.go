@@ -7,16 +7,13 @@ import (
 	"log"
 )
 
-// DB mysql global
-var DB *sql.DB
-
 // Connect to the MySQL database and return the db connection
-func Connect() {
-	var err error
-	DB, err = sql.Open("mysql", "username:password@tcp(192.168.178.5:3306)/db")
+func Connect() (*sql.DB, error) {
+	db, err := sql.Open("mysql", "username:password@tcp(192.168.178.5:3306)/db")
 	if err != nil {
 		log.Fatal(err)
 	}
+	return db, err
 }
 
 // Disconnect to the MySQL database and return the db connection
