@@ -1,35 +1,34 @@
 package server
 
 import (
-	"fmt"
 	"log"
 
-	"github.com/fellippemendonca/templateWebService/server/middleware"
+	"github.com/fellippemendonca/templateWebService/services"
 	"github.com/fellippemendonca/templateWebService/services/databases/mysql"
 	"github.com/gin-gonic/gin"
 )
 
 // Run Server
 func Run() {
-	router := gin.New()
 
-	fmt.Printf("Connecting MySQL Database... ")
+	// Connect to required services
 	mysqlDb, err := mysql.Connect()
 	if err != nil {
 		log.Panic(err)
 	}
-	mysqlMid := middleware.SQLDB("MYSQL", mysqlDb)
-	fmt.Println("OK")
 
-	fmt.Printf("Setting middlewares... ")
-	router.Use(mysqlMid)
+	// Assign services connection to an injectable struct
+	svc := services.Services{}
+	svc.Mysql = mysqlDb
+
+	// Create Router and middleware
+	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
-	fmt.Println("OK")
 
-	fmt.Println("Setting routes... ")
-	InitRoutes(router)
-	fmt.Println("Setting routes... OK")
+	// Init routes and inject started services access
+	InitRoutes(router, &svc)
 
+	// Start service on assigned port
 	router.Run(":3000")
 }
