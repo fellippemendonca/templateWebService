@@ -25,11 +25,9 @@ func GetAllUsers(svc *services.Services) []*User {
 	}
 	defer rows.Close()
 
-	// users := []User{}
 	users := make([]*User, 0)
 
 	for rows.Next() {
-		// user := User{}
 		user := new(User)
 		err := rows.Scan(&user.ID, &user.FirstName, &user.LastName)
 		if err != nil {
