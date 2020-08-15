@@ -11,7 +11,7 @@ import (
 // GetAllUsers get all users
 func GetAllUsers(svc *services.Services) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		var users []models.User
+		var users []*models.User
 		users = models.GetAllUsers(svc)
 		c.JSON(200, users)
 	}
@@ -26,7 +26,7 @@ func GetUserByID(svc *services.Services) func(c *gin.Context) {
 			userID = 0
 		}
 
-		var user models.User
+		var user *models.User
 		user = models.GetUserByID(svc, userID)
 
 		c.JSON(200, user)

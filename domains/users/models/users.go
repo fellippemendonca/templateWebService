@@ -16,7 +16,7 @@ type User struct {
 }
 
 // GetAllUsers model method
-func GetAllUsers(svc *services.Services) []User {
+func GetAllUsers(svc *services.Services) []*User {
 	queryOne := "select ID, FIRST_NAME, LAST_NAME from profile"
 	rows, err := svc.Mysql.Query(queryOne)
 
@@ -25,10 +25,12 @@ func GetAllUsers(svc *services.Services) []User {
 	}
 	defer rows.Close()
 
-	users := []User{}
+	// users := []User{}
+	users := make([]*User, 0)
 
 	for rows.Next() {
-		user := User{}
+		// user := User{}
+		user := new(User)
 		err := rows.Scan(&user.ID, &user.FirstName, &user.LastName)
 		if err != nil {
 			log.Fatal(err)
@@ -44,9 +46,9 @@ func GetAllUsers(svc *services.Services) []User {
 }
 
 // GetUserByID model method
-func GetUserByID(svc *services.Services, id int) User {
+func GetUserByID(svc *services.Services, id int) *User {
 	query := "SELECT ID, FIRST_NAME, LAST_NAME FROM profile WHERE ID = ? ;"
-	var user User
+	user := new(User)
 	row := svc.Mysql.QueryRow(query, id)
 	err := row.Scan(&user.ID, &user.FirstName, &user.LastName)
 	switch err {
