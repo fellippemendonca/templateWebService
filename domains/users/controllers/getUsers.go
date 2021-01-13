@@ -17,7 +17,7 @@ func GetAllUsers(svc *services.Services) func(c *gin.Context) {
 	}
 }
 
-// GetUserByID get user by ID
+// GetUserByID get user by userID
 func GetUserByID(svc *services.Services) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var userID int
